@@ -7,79 +7,122 @@
 <title>AMMYTECH Certificate Verification</title>
 
 <style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f4f6f8;
+* {
+    box-sizing: border-box;
 }
 
-.container{
-    max-width:700px;
-    margin:40px auto;
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 5px 25px rgba(0,0,0,0.12);
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f5f9;
+    color: #222;
 }
 
-.header{
-    text-align:center;
-    border-bottom:2px solid #222;
-    padding-bottom:20px;
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
 }
 
-.header h1{
-    margin:0;
-    font-size:28px;
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.10);
 }
 
-.header p{
-    margin:6px 0;
-    color:#555;
+.header {
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-.status{
-    text-align:center;
-    margin:25px 0;
-    padding:15px;
-    border-radius:8px;
-    font-weight:bold;
+.header h1 {
+    margin: 0;
+    font-size: 28px;
 }
 
-.valid{
-    background:#dff5e3;
-    color:#187333;
+.header p {
+    margin: 8px 0 0;
+    color: #555;
 }
 
-.invalid{
-    background:#ffe0e0;
-    color:#b00020;
+.status {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 25px;
 }
 
-.details{
-    margin-top:20px;
+.valid {
+    background: #dff5e3;
+    color: #167534;
 }
 
-.row{
-    display:flex;
-    border-bottom:1px solid #ddd;
-    padding:12px 5px;
+.invalid {
+    background: #fde2e2;
+    color: #b00020;
 }
 
-.label{
-    width:40%;
-    font-weight:bold;
+.loading {
+    text-align: center;
+    font-size: 18px;
+    padding: 30px;
 }
 
-.value{
-    width:60%;
+.details {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.footer{
-    margin-top:30px;
-    text-align:center;
-    font-size:14px;
-    color:#666;
+.details tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.details td {
+    padding: 12px 8px;
+}
+
+.details td:first-child {
+    font-weight: bold;
+    width: 40%;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.error {
+    text-align: center;
+    color: #b00020;
+    font-size: 18px;
+    padding: 20px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        margin: 15px auto;
+        padding: 10px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+    }
+
+    .details td {
+        padding: 10px 5px;
+    }
 }
 </style>
 </head>
@@ -88,167 +131,198 @@ body{
 
 <div class="container">
 
-    <div class="header">
-        <h1>AMMYTECH COMPUTER INSTITUTE</h1>
-        <p>Learn • Practice • Grow</p>
-        <p>Certificate Verification</p>
-    </div>
+    <div class="card">
 
-    <div id="status" class="status">
-        Verifying Certificate...
-    </div>
+        <div class="header">
+            <h1>AMMYTECH COMPUTER INSTITUTE</h1>
+            <p>Learn • Practice • Grow</p>
+            <p>Certificate Verification</p>
+        </div>
 
-    <div id="details" class="details"></div>
+        <div id="result">
+            <div class="loading">
+                Verifying Certificate...
+            </div>
+        </div>
 
-    <div class="footer">
-        AMMYTECH COMPUTER INSTITUTE<br>
-        Ablowal, Back Side Thapar University, Near Fateh Medical Store<br>
-        Phone: 9999949313
+        <div class="footer">
+            <strong>AMMYTECH COMPUTER INSTITUTE</strong><br>
+            Ablowal, Back Side Thapar University,<br>
+            Near Fateh Medical Store, Patiala<br>
+            Phone: 9999949313<br>
+            Email: ammytechinstitute@gmail.com
+        </div>
+
     </div>
 
 </div>
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbxkWtUjVU18p57sbaV7x467Nn21lwys_CsaBFIpoPEvfbQUI_TOf86LvRih7qXRBVeKAw/exec";
-
+const API_URL = "https://script.google.com/macros/s/AKfycbwnHXcGldTUg2AmMajb8ZjTah0NSA93fqdq6_UkShj3FoKNVnR-NaHbUywBdDO6VkQmUg/exec";
 
 const params = new URLSearchParams(window.location.search);
 
 const certificateID = params.get("id");
 
-const statusBox = document.getElementById("status");
-
-const detailsBox = document.getElementById("details");
+const resultBox = document.getElementById("result");
 
 
-function showDetails(cert){
+function showCertificate(certificate) {
 
-    detailsBox.innerHTML = `
+    resultBox.innerHTML = `
 
-        <div class="row">
-            <div class="label">Certificate No.</div>
-            <div class="value">${cert.CertificateNumber || ""}</div>
+        <div class="status valid">
+            ✓ CERTIFICATE VERIFIED — VALID
         </div>
 
-        <div class="row">
-            <div class="label">Admission No.</div>
-            <div class="value">${cert.AdmissionNumber || ""}</div>
+        <table class="details">
+
+            <tr>
+                <td>Certificate Number</td>
+                <td>${certificate.CertificateNumber || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Admission Number</td>
+                <td>${certificate.AdmissionNumber || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Issue Date</td>
+                <td>${certificate.IssueDate || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Student Name</td>
+                <td>${certificate.StudentTitle || ""} ${certificate.StudentName || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Father Name</td>
+                <td>${certificate.FatherName || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Course</td>
+                <td>${certificate.Course1 || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Course Duration</td>
+                <td>${certificate.CourseDuration || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Total Marks</td>
+                <td>${certificate.TotalMarks || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Marks Obtained</td>
+                <td>${certificate.MarksObtained || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Percentage</td>
+                <td>${certificate.Percentage || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Grade</td>
+                <td>${certificate.Grade || "-"}</td>
+            </tr>
+
+            <tr>
+                <td>Status</td>
+                <td><strong>${certificate.Status || "VALID"}</strong></td>
+            </tr>
+
+        </table>
+    `;
+}
+
+
+function showNotFound(message) {
+
+    resultBox.innerHTML = `
+
+        <div class="status invalid">
+            ✗ CERTIFICATE NOT FOUND
         </div>
 
-        <div class="row">
-            <div class="label">Student Name</div>
-            <div class="value">${cert.StudentTitle || ""} ${cert.StudentName || ""}</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Father Name</div>
-            <div class="value">${cert.FatherName || ""}</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Course</div>
-            <div class="value">
-                ${[
-                    cert.Course1,
-                    cert.Course2,
-                    cert.Course3
-                ].filter(Boolean).join(", ")}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="label">Course Duration</div>
-            <div class="value">${cert.CourseDuration || ""}</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Marks</div>
-            <div class="value">
-                ${cert.MarksObtained || ""} / ${cert.TotalMarks || ""}
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="label">Percentage</div>
-            <div class="value">${cert.Percentage || ""}</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Grade</div>
-            <div class="value">${cert.Grade || ""}</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Issue Date</div>
-            <div class="value">${cert.IssueDate || ""}</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Status</div>
-            <div class="value">${cert.Status || "VALID"}</div>
+        <div class="error">
+            ${message || "This certificate could not be verified."}
+            <br><br>
+            Please check the Certificate Number.
         </div>
 
     `;
 }
 
 
-async function verifyCertificate(){
+async function verifyCertificate() {
 
-    if(!certificateID){
+    if (!certificateID) {
 
-        statusBox.className = "status invalid";
-
-        statusBox.innerHTML =
-            "❌ Certificate Number Missing";
+        showNotFound("Certificate ID is missing.");
 
         return;
     }
 
-    try{
+    try {
 
-        const response = await fetch(
+        const url =
             API_URL +
             "?id=" +
-            encodeURIComponent(certificateID)
-        );
+            encodeURIComponent(certificateID);
 
-        const data = await response.json();
+        const response = await fetch(url);
 
-        if(data.success && data.certificate){
+        if (!response.ok) {
 
-            statusBox.className = "status valid";
-
-            statusBox.innerHTML =
-                "✓ CERTIFICATE VERIFIED — VALID";
-
-            showDetails(data.certificate);
-
-        }else{
-
-            statusBox.className = "status invalid";
-
-            statusBox.innerHTML =
-                "❌ CERTIFICATE NOT FOUND";
-
-            detailsBox.innerHTML =
-                "<p style='text-align:center'>No certificate record was found for this certificate number.</p>";
+            throw new Error(
+                "Server Error: " + response.status
+            );
 
         }
 
-    }catch(error){
+        const data = await response.json();
 
-        statusBox.className = "status invalid";
+        console.log("Certificate API Response:", data);
 
-        statusBox.innerHTML =
-            "⚠ Verification Server Error";
+        if (
+            data.success === true &&
+            data.certificate
+        ) {
 
-        detailsBox.innerHTML =
-            "<p style='text-align:center'>Please try again later.</p>";
+            showCertificate(data.certificate);
+
+        } else {
+
+            showNotFound(
+                data.message || "Certificate not found."
+            );
+
+        }
+
+    } catch (error) {
 
         console.error(error);
 
+        resultBox.innerHTML = `
+
+            <div class="status invalid">
+                ✗ VERIFICATION ERROR
+            </div>
+
+            <div class="error">
+                Certificate verification server could not be reached.
+                <br><br>
+                Please try again later.
+            </div>
+
+        `;
     }
 }
 
