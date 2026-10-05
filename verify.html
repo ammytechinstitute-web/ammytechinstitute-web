@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AMMYTECH Certificate Verification</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f1f5f9;
+    color:#1e293b;
+}
+
+.header{
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    padding:25px 15px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+}
+
+.header p{
+    margin:8px 0 0;
+    font-size:15px;
+}
+
+.container{
+    max-width:700px;
+    margin:35px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:30px;
+    box-shadow:0 5px 25px rgba(0,0,0,0.10);
+}
+
+.verified{
+    text-align:center;
+    color:#15803d;
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.row{
+    border-bottom:1px solid #e2e8f0;
+    padding:12px 0;
+}
+
+.label{
+    font-weight:bold;
+    color:#475569;
+}
+
+.value{
+    margin-top:4px;
+    font-size:17px;
+}
+
+.error{
+    text-align:center;
+    color:#dc2626;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#64748b;
+    font-size:13px;
+}
+
+.badge{
+    display:inline-block;
+    background:#dcfce7;
+    color:#166534;
+    padding:8px 15px;
+    border-radius:20px;
+    font-size:14px;
+    margin-bottom:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>AMMYTECH COMPUTER INSTITUTE</h1>
+    <p>Learn • Practice • Grow</p>
+</div>
+
+<div class="container">
+
+    <div class="card" id="result">
+        Checking certificate...
+    </div>
+
+    <div class="footer">
+        AMMYTECH COMPUTER INSTITUTE<br>
+        Ablowal, Back Side Thapar University, Near Fateh Medical Store<br>
+        Certificate Verification System
+    </div>
+
+</div>
+
+<script src="certificates.js"></script>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+const certificateID = params.get("id");
+
+const result = document.getElementById("result");
+
+if(!certificateID){
+
+    result.innerHTML = `
+        <div class="error">
+            Certificate Number Missing
+        </div>
+        <p style="text-align:center;">
+            Please scan the correct certificate QR code.
+        </p>
+    `;
+
+}else{
+
+    const id = certificateID.toUpperCase();
+
+    const cert = certificates[id];
+
+    if(cert){
+
+        result.innerHTML = `
+
+            <div class="verified">
+                ✓ Certificate Verified
+            </div>
+
+            <div style="text-align:center;">
+                <span class="badge">VALID CERTIFICATE</span>
+            </div>
+
+            <div class="row">
+                <div class="label">Certificate Number</div>
+                <div class="value">${cert.certificateNumber}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Student Name</div>
+                <div class="value">${cert.studentName}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Father's Name</div>
+                <div class="value">${cert.fatherName}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Course</div>
+                <div class="value">${cert.course}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Marks</div>
+                <div class="value">${cert.marks}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Percentage</div>
+                <div class="value">${cert.percentage}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Grade</div>
+                <div class="value">${cert.grade}</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Issue Date</div>
+                <div class="value">${cert.issueDate}</div>
+            </div>
+
+        `;
+
+    }else{
+
+        result.innerHTML = `
+
+            <div class="error">
+                ✕ Certificate Not Found
+            </div>
+
+            <p style="text-align:center;">
+                Certificate Number:
+                <strong>${id}</strong>
+            </p>
+
+            <p style="text-align:center;">
+                This certificate could not be verified.
+            </p>
+
+        `;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

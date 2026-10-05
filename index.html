@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMMYTECH Certificate Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="shell">
+
+<aside class="sidebar">
+
+<div class="brand">
+<div class="logo">A</div>
+<div>
+<b>AMMYTECH</b>
+<small>Certificate Manager</small>
+</div>
+</div>
+
+<nav>
+<button class="nav active" data-page="dashboard">⌂ <span>Dashboard</span></button>
+<button class="nav" data-page="create">＋ <span>Create Certificate</span></button>
+<button class="nav" data-page="records">▣ <span>Certificate Records</span></button>
+<button class="nav" data-page="verify">✓ <span>Verify Certificate</span></button>
+<button class="nav" data-page="settings">⚙ <span>Institute Settings</span></button>
+</nav>
+
+<div class="sidefoot">
+<b>AMMYTECH COMPUTER INSTITUTE</b>
+<small>Learn • Practice • Grow</small>
+</div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+<div class="headleft">
+<button id="menu">☰</button>
+<div>
+<small>CERTIFICATE MANAGEMENT</small>
+<h1 id="title">Dashboard</h1>
+</div>
+</div>
+
+<div class="headright">
+<span id="today"></span>
+<button class="newbtn" onclick="newCertificate()">＋ New Certificate</button>
+</div>
+
+</header>
+
+
+<!-- DASHBOARD -->
+
+<section class="page active" id="dashboard">
+
+<div class="hero">
+
+<div>
+<small>WELCOME TO AMMYTECH</small>
+<h2>Certificate Management Dashboard</h2>
+<p>Manage student certificates, results and verification from one professional application.</p>
+</div>
+
+<button onclick="newCertificate()">Create Certificate</button>
+
+</div>
+
+
+<div class="stats">
+
+<div>
+<i>▣</i>
+<span>Total Certificates<b id="sTotal">0</b></span>
+</div>
+
+<div>
+<i>✓</i>
+<span>Saved Records<b id="sSaved">0</b></span>
+</div>
+
+<div>
+<i>%</i>
+<span>Average Percentage<b id="sAvg">0%</b></span>
+</div>
+
+<div>
+<i>★</i>
+<span>A / A+ Grades<b id="sTop">0</b></span>
+</div>
+
+</div>
+
+
+<div class="dashgrid">
+
+<div class="card">
+
+<div class="cardhead">
+
+<div>
+<h3>Recent Certificates</h3>
+<small>Latest saved records</small>
+</div>
+
+<button onclick="page('records')">View all →</button>
+
+</div>
+
+<div id="recent"></div>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardhead">
+
+<div>
+<h3>Quick Actions</h3>
+<small>Common tasks</small>
+</div>
+
+</div>
+
+<button class="quick" onclick="newCertificate()">
+🎓
+<span>
+<b>Create Certificate</b>
+<small>Issue a new student certificate</small>
+</span>
+→
+</button>
+
+<button class="quick" onclick="page('verify')">
+✓
+<span>
+<b>Verify Certificate</b>
+<small>Check certificate number</small>
+</span>
+→
+</button>
+
+<button class="quick" onclick="page('settings')">
+⚙
+<span>
+<b>Institute Profile</b>
+<small>Update institute details</small>
+</span>
+→
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- CREATE -->
+
+<section class="page" id="create">
+
+<div class="intro">
+
+<div>
+<small>NEW / EDIT RECORD</small>
+<h2>Create Certificate</h2>
+<p>Create a professional student certificate with QR verification.</p>
+</div>
+
+<div>
+<button class="secondary" onclick="clearForm()">Clear</button>
+<button class="primary" onclick="saveCertificate()">💾 Save Certificate</button>
+</div>
+
+</div>
+
+
+<div class="builder">
+
+<div class="card formcard">
+
+<h3>Institute Information</h3>
+
+<div class="grid2">
+
+<label>
+Institute Name
+<input id="instituteName">
+</label>
+
+<label>
+Institute Address
+<input id="instituteAddress">
+</label>
+
+<label>
+Phone Number
+<input id="institutePhone">
+</label>
+
+<label>
+Email
+<input id="instituteEmail">
+</label>
+
+<label>
+MSME / Udyam Number
+<input id="udyamNumber">
+</label>
+
+<label>
+Director / Authority
+<input id="directorName">
+</label>
+
+</div>
+
+
+<h3>Certificate Information</h3>
+
+<div class="grid2">
+
+<label>
+Certificate Number
+<input id="certificateNumber" readonly>
+</label>
+
+<label>
+Admission Number
+<input id="admissionNumber" placeholder="Example: AMMY0001">
+</label>
+
+<label>
+Issue Date
+<input type="date" id="issueDate">
+</label>
+
+<label>
+Student Title
+<select id="studentTitle">
+<option>Mr.</option>
+<option>Mrs.</option>
+<option>Ms.</option>
+</select>
+</label>
+
+</div>
+
+
+<h3>Student Information</h3>
+
+<div class="grid2">
+
+<label>
+Student Name *
+<input id="studentName" placeholder="Enter Student Name">
+</label>
+
+<label>
+Father's Name
+<input id="fatherName" placeholder="Enter Father's Name">
+</label>
+
+<label>
+Student Address
+<input id="studentAddress" placeholder="Enter Student Address">
+</label>
+
+<label>
+Student Phone
+<input id="studentPhone" placeholder="Enter Student Phone">
+</label>
+
+</div>
+
+
+<h3>Course Information</h3>
+
+<div class="grid2">
+
+<label>
+Course 1 *
+<input id="course1" placeholder="Example: Diploma in Computer Applications">
+</label>
+
+<label>
+Course 2 (Optional)
+<input id="course2">
+</label>
+
+<label>
+Course 3 (Optional)
+<input id="course3">
+</label>
+
+<label>
+Course Duration
+<input id="courseDuration" placeholder="Example: 6 Months / 1 Year">
+</label>
+
+</div>
+
+
+<h3>Marks & Result</h3>
+
+<div class="grid4">
+
+<label>
+Total Marks
+<input type="number" id="totalMarks" placeholder="600">
+</label>
+
+<label>
+Marks Obtained
+<input type="number" id="marksObtained" placeholder="500">
+</label>
+
+<label>
+Percentage
+<input id="percentage" readonly>
+</label>
+
+<label>
+Grade
+<input id="grade" readonly>
+</label>
+
+</div>
+
+
+<h3>Student Photo</h3>
+
+<div class="upload">
+
+<div>
+<img id="uploadPhoto">
+<span id="uploadText">PHOTO</span>
+</div>
+
+<section>
+<input type="file" id="studentPhoto" accept="image/*">
+<small>Passport-size / clear student photo</small>
+</section>
+
+</div>
+
+</div>
+
+
+
+<!-- PREVIEW -->
+
+<div class="card previewcard">
+
+<div class="previewhead">
+
+<div>
+<h3>Live Certificate Preview</h3>
+<small>Professional A4 landscape certificate</small>
+</div>
+
+<button class="secondary" onclick="printCertificate()">🖨 Print / PDF</button>
+
+</div>
+
+
+<div class="previewarea">
+
+<div class="certificate" id="certificate">
+
+<div class="watermark">AMMYTECH</div>
+
+<div class="cframe"></div>
+
+
+<div class="ctop">
+
+<div class="cbrand">
+
+<small>PROFESSIONAL TRAINING INSTITUTE</small>
+
+<h1 id="pInstitute">AMMYTECH COMPUTER INSTITUTE</h1>
+
+<b>LEARN • PRACTICE • GROW</b>
+
+<em>ISO 9001:2015 Certified</em>
+
+<em>
+Udyam Registration No.:
+<span id="pUdyam">UDYAM-PB-17-0130510</span>
+</em>
+
+</div>
+
+
+<div class="cphoto">
+
+<img id="pPhoto">
+
+<span id="pPhotoText">PHOTO</span>
+
+</div>
+
+
+<div class="cqr">
+
+<div id="qrcode"></div>
+
+<small>SCAN TO VERIFY</small>
+
+</div>
+
+</div>
+
+
+<div class="goldline"></div>
+
+
+<h2>CERTIFICATE OF COMPLETION</h2>
+
+<p class="present">
+This certificate is proudly presented to
+</p>
+
+
+<div class="pstudent" id="pStudent">
+Mr. STUDENT NAME
+</div>
+
+
+<p class="pfather">
+Son / Daughter of
+<b id="pFather">________________</b>
+</p>
+
+
+<p class="completion">
+for successfully completing the following course(s) at AMMYTECH Computer Institute.
+</p>
+
+
+<div class="courses">
+
+<b id="pCourse1"></b>
+<b id="pCourse2"></b>
+<b id="pCourse3"></b>
+
+</div>
+
+
+<p class="duration">
+Course Duration:
+<b id="pDuration">____________</b>
+</p>
+
+
+<div class="marks">
+
+<div>
+<small>Total Marks</small>
+<b id="pTotal">0</b>
+</div>
+
+<div>
+<small>Marks Obtained</small>
+<b id="pObtained">0</b>
+</div>
+
+<div>
+<small>Percentage</small>
+<b id="pPercent">0%</b>
+</div>
+
+<div class="grade">
+<small>Grade</small>
+<b id="pGrade">-</b>
+</div>
+
+</div>
+
+
+<div class="cfooter">
+
+<div>
+
+<span>
+Certificate No.:
+<b id="pCert">________</b>
+</span>
+
+<span>
+Admission No.:
+<b id="pAdmission">________</b>
+</span>
+
+<span>
+Date of Issue:
+<b id="pDate">________</b>
+</span>
+
+</div>
+
+
+<div class="studentcontact">
+
+<b id="pAddress">Student Address</b>
+
+<span>
+Phone:
+<b id="pPhone">________</b>
+</span>
+
+</div>
+
+
+<div class="sign">
+
+<div></div>
+
+<b id="pDirector">Shankar Baheliya</b>
+
+<small>
+Director / Authorized Authority
+</small>
+
+</div>
+
+</div>
+
+
+<footer>
+
+<span id="pInstituteAddress">
+Ablowal, Back Side Thapar University, Near Fateh Medical Store
+</span>
+
+•
+Phone:
+<b id="pInstitutePhone">9999949313</b>
+
+•
+
+<span id="pEmail">
+ammytechinstitute@gmail.com
+</span>
+
+</footer>
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- RECORDS -->
+
+<section class="page" id="records">
+
+<div class="intro">
+
+<div>
+
+<small>SAVED DATA</small>
+
+<h2>Certificate Records</h2>
+
+<p>Search, edit, print or delete certificates.</p>
+
+</div>
+
+<button class="primary" onclick="newCertificate()">
+＋ New Certificate
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="toolbar">
+
+<input
+id="search"
+placeholder="⌕ Search student, course or certificate number"
+oninput="renderRecords()"
+>
+
+<span id="count"></span>
+
+</div>
+
+
+<div class="tablewrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Certificate</th>
+<th>Student</th>
+<th>Course</th>
+<th>Marks / Result</th>
+<th>Date</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="table"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- VERIFY -->
+
+<section class="page" id="verify">
+
+<div class="verifybox">
+
+<div class="verifyicon">✓</div>
+
+<small>CERTIFICATE AUTHENTICATION</small>
+
+<h2>Verify Certificate</h2>
+
+<p>
+Enter Certificate Number to verify a certificate saved in this application.
+</p>
+
+
+<div>
+
+<input
+id="verifyNumber"
+placeholder="AMMY-CERT-0001"
+>
+
+<button class="primary" onclick="verify()">
+Verify
+</button>
+
+</div>
+
+
+<article id="verifyResult"></article>
+
+</div>
+
+</section>
+
+
+
+<!-- SETTINGS -->
+
+<section class="page" id="settings">
+
+<div class="intro">
+
+<div>
+
+<small>CONFIGURATION</small>
+
+<h2>Institute Settings</h2>
+
+<p>These details are used on certificates.</p>
+
+</div>
+
+<button class="primary" onclick="saveSettings()">
+Save Settings
+</button>
+
+</div>
+
+
+<div class="card settings">
+
+<h3>Institute Profile</h3>
+
+
+<div class="grid2">
+
+<label>
+Institute Name
+<input id="setName">
+</label>
+
+<label>
+Director Name
+<input id="setDirector">
+</label>
+
+<label>
+Address
+<input id="setAddress">
+</label>
+
+<label>
+Phone
+<input id="setPhone">
+</label>
+
+<label>
+Email
+<input id="setEmail">
+</label>
+
+<label>
+Udyam Registration
+<input id="setUdyam">
+</label>
+
+</div>
+
+
+<p class="note">
+
+ISO 9001:2015 certification details are displayed as supplied by the institute.
+
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
