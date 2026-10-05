@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMMYTECH Certificate Generator</title>
+    <link rel="stylesheet" href="certificate.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+    <header class="top-header">
+        <div>
+            <h1>AMMYTECH COMPUTER INSTITUTE</h1>
+            <p>Certificate Generator</p>
+        </div>
+    </header>
+
+    <!-- FORM SECTION -->
+    <section class="form-section">
+
+        <h2>Certificate Information</h2>
+
+        <div class="form-grid">
+
+            <div class="field">
+                <label>Institute Name</label>
+                <input type="text" id="instituteName"
+                       value="AMMYTECH COMPUTER INSTITUTE">
+            </div>
+
+            <div class="field">
+                <label>Institute Address</label>
+                <input type="text" id="instituteAddress"
+                       value="Ablowal, Back Side Thapar University, Near Fateh Medical Store">
+            </div>
+
+            <div class="field">
+                <label>Phone Number</label>
+                <input type="text" id="institutePhone"
+                       value="9999949313">
+            </div>
+
+            <div class="field">
+                <label>Email</label>
+                <input type="email" id="instituteEmail"
+                       value="ammytechinstitute@gmail.com">
+            </div>
+
+            <div class="field">
+                <label>MSME / Udyam Number</label>
+                <input type="text" id="udyamNumber"
+                       value="UDYAM-PB-17-0130510">
+            </div>
+
+            <div class="field">
+                <label>Certificate Number</label>
+                <input type="text" id="certificateNumber"
+                       placeholder="Example: AMMY-CERT-0001">
+            </div>
+
+            <div class="field">
+                <label>Admission Number</label>
+                <input type="text" id="admissionNumber"
+                       placeholder="Example: AMMY0001">
+            </div>
+
+            <div class="field">
+                <label>Issue Date</label>
+                <input type="date" id="issueDate">
+            </div>
+
+            <div class="field">
+                <label>Student Title</label>
+                <select id="studentTitle">
+                    <option value="Mr.">Mr.</option>
+                    <option value="Mrs.">Mrs.</option>
+                    <option value="Ms.">Ms.</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Student Name</label>
+                <input type="text" id="studentName"
+                       placeholder="Enter Student Name">
+            </div>
+
+            <div class="field">
+                <label>Father's Name</label>
+                <input type="text" id="fatherName"
+                       placeholder="Enter Father's Name">
+            </div>
+
+            <div class="field">
+                <label>Course 1</label>
+                <input type="text" id="course1"
+                       placeholder="Example: Diploma in Computer Applications">
+            </div>
+
+            <div class="field">
+                <label>Course 2 (Optional)</label>
+                <input type="text" id="course2"
+                       placeholder="Optional">
+            </div>
+
+            <div class="field">
+                <label>Course 3 (Optional)</label>
+                <input type="text" id="course3"
+                       placeholder="Optional">
+            </div>
+
+            <div class="field">
+                <label>Course Duration</label>
+                <input type="text" id="courseDuration"
+                       placeholder="Example: 12 Months">
+            </div>
+
+            <div class="field">
+                <label>Total Marks</label>
+                <input type="number" id="totalMarks"
+                       min="0"
+                       placeholder="Example: 500">
+            </div>
+
+            <div class="field">
+                <label>Marks Obtained</label>
+                <input type="number" id="marksObtained"
+                       min="0"
+                       placeholder="Example: 425">
+            </div>
+
+            <div class="field">
+                <label>Percentage</label>
+                <input type="text" id="percentage"
+                       readonly
+                       placeholder="Automatic">
+            </div>
+
+            <div class="field">
+                <label>Grade</label>
+                <input type="text" id="grade"
+                       readonly
+                       placeholder="Automatic">
+            </div>
+
+            <div class="field">
+                <label>Director / Authority</label>
+                <input type="text" id="directorName"
+                       value="Shankar Baheliya">
+            </div>
+
+            <div class="field photo-field">
+                <label>Student Photo</label>
+                <input type="file" id="studentPhoto" accept="image/*">
+                <div id="photoName">No photo selected</div>
+            </div>
+
+        </div>
+
+        <div class="button-row">
+            <button class="generate-btn" onclick="generateCertificate()">
+                🎓 GENERATE CERTIFICATE
+            </button>
+
+            <button class="clear-btn" onclick="clearForm()">
+                🗑 CLEAR FORM
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- CERTIFICATE SECTION -->
+    <section class="certificate-area">
+
+        <div class="certificate-actions">
+            <button onclick="printCertificate()">
+                🖨 PRINT CERTIFICATE
+            </button>
+
+            <button onclick="saveCertificate()">
+                💾 SAVE CERTIFICATE
+            </button>
+        </div>
+
+
+        <!-- ACTUAL CERTIFICATE -->
+        <div id="certificate" class="certificate">
+
+            <div class="certificate-border border-one"></div>
+            <div class="certificate-border border-two"></div>
+
+            <div class="watermark">
+                AMMYTECH COMPUTER INSTITUTE
+            </div>
+
+            <div class="certificate-content">
+
+                <div class="cert-top">
+
+                    <div class="institute-block">
+                        <h1 id="certInstituteName">
+                            AMMYTECH COMPUTER INSTITUTE
+                        </h1>
+
+                        <div class="cert-subtitle">
+                            CERTIFIED INSTITUTE
+                        </div>
+
+                        <div class="msme">
+                            MSME GOVT. OF INDIA
+                        </div>
+
+                        <div class="udyam">
+                            Udyam Registration No.:
+                            <strong id="certUdyam">
+                                UDYAM-PB-17-0130510
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="photo-box">
+                        <img id="certPhoto" src="" alt="Student Photo">
+                        <span id="photoText">PHOTO</span>
+                    </div>
+
+                </div>
+
+
+                <div class="certificate-title">
+                    CERTIFICATE OF COMPLETION
+                </div>
+
+                <p class="presented">
+                    This certificate is proudly presented to
+                </p>
+
+                <div class="student-name" id="certStudentName">
+                    STUDENT NAME
+                </div>
+
+                <p class="father-line">
+                    Son / Daughter of
+                    <strong id="certFatherName">________________</strong>
+                </p>
+
+
+                <p class="completion-text">
+                    for successfully completing the following course(s)
+                    at AMMYTECH Computer Institute.
+                </p>
+
+
+                <div class="courses-box">
+
+                    <div id="certCourse1"></div>
+                    <div id="certCourse2"></div>
+                    <div id="certCourse3"></div>
+
+                </div>
+
+
+                <div class="duration">
+                    Course Duration:
+                    <strong id="certDuration">____________</strong>
+                </div>
+
+
+                <div class="marks-section">
+
+                    <div class="marks-box">
+                        <span>Total Marks</span>
+                        <strong id="certTotalMarks">0</strong>
+                    </div>
+
+                    <div class="marks-box">
+                        <span>Marks Obtained</span>
+                        <strong id="certMarksObtained">0</strong>
+                    </div>
+
+                    <div class="marks-box">
+                        <span>Percentage</span>
+                        <strong id="certPercentage">0%</strong>
+                    </div>
+
+                    <div class="marks-box grade-box">
+                        <span>Grade</span>
+                        <strong id="certGrade">-</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="certificate-footer">
+
+                    <div class="footer-info">
+
+                        <p>
+                            Certificate No.:
+                            <strong id="certNumber">
+                                __________
+                            </strong>
+                        </p>
+
+                        <p>
+                            Admission No.:
+                            <strong id="certAdmission">
+                                __________
+                            </strong>
+                        </p>
+
+                        <p>
+                            Date of Issue:
+                            <strong id="certIssueDate">
+                                __________
+                            </strong>
+                        </p>
+
+                    </div>
+
+
+                    <div class="signature">
+
+                        <div class="signature-line"></div>
+
+                        <strong id="certDirector">
+                            Shankar Baheliya
+                        </strong>
+
+                        <span>
+                            Director / Authorized Authority
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="contact-line">
+
+                    <span id="certAddress">
+                        Ablowal, Back Side Thapar University,
+                        Near Fateh Medical Store
+                    </span>
+
+                    <span> | </span>
+
+                    <span>
+                        Phone:
+                        <strong id="certPhone">
+                            9999949313
+                        </strong>
+                    </span>
+
+                    <span> | </span>
+
+                    <span id="certEmail">
+                        ammytechinstitute@gmail.com
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- VERIFY SECTION -->
+    <section class="verify-section">
+
+        <h2>Certificate Verification</h2>
+
+        <p>
+            Enter Certificate Number to check certificate status.
+        </p>
+
+        <div class="verify-box">
+
+            <input type="text"
+                   id="verifyNumber"
+                   placeholder="Enter Certificate Number">
+
+            <button onclick="verifyCertificate()">
+                🔎 VERIFY
+            </button>
+
+        </div>
+
+        <div id="verifyResult"></div>
+
+    </section>
+
+</div>
+
+
+<script src="certificate.js"></script>
+
+</body>
+</html>

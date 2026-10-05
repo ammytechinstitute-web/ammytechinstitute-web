@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AMMYTECH Certificate Verification</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #eef2f7;
+            font-family: Arial, sans-serif;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        .header {
+            background: linear-gradient(
+                135deg,
+                #052c65,
+                #0b5ed7
+            );
+
+            color: white;
+
+            padding: 25px;
+
+            text-align: center;
+
+            border-radius: 12px 12px 0 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+        }
+
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .valid {
+            background: #d1e7dd;
+            color: #146c43;
+        }
+
+        .invalid {
+            background: #f8d7da;
+            color: #b02a37;
+        }
+
+        .loading {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .details {
+            border: 1px solid #dbe2ea;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 190px 1fr;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            background: #f1f5f9;
+            padding: 12px;
+            font-weight: bold;
+        }
+
+        .value {
+            padding: 12px;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media(max-width:600px) {
+
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .label {
+                padding-bottom: 5px;
+            }
+
+            .value {
+                padding-top: 5px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>
+            AMMYTECH COMPUTER INSTITUTE
+        </h1>
+
+        <p>
+            Certificate Verification
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div id="status"
+             class="status loading">
+            Checking Certificate...
+        </div>
+
+
+        <div id="details"
+             class="details">
+        </div>
+
+
+        <div class="footer">
+
+            AMMYTECH COMPUTER INSTITUTE<br>
+
+            Ablowal, Back Side Thapar University,
+            Near Fateh Medical Store<br>
+
+            Phone: 9999949313<br>
+
+            ammytechinstitute@gmail.com
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwnHXcGldTUg2AmMajb8ZjTah0NSA93fqdq6_UkShj3FoKNVnR-NaHbUywBdDO6VkQmUg/exec";
+
+
+function escapeHTML(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function formatDate(value) {
+
+    if (!value) return "-";
+
+    const date =
+        new Date(value);
+
+    if (isNaN(date.getTime())) {
+        return value;
+    }
+
+    return date.toLocaleDateString("en-IN");
+
+}
+
+
+async function verify() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const id =
+        params.get("id");
+
+
+    const status =
+        document.getElementById("status");
+
+
+    const details =
+        document.getElementById("details");
+
+
+    if (!id) {
+
+        status.textContent =
+            "✕ CERTIFICATE NUMBER MISSING";
+
+        status.className =
+            "status invalid";
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "?id=" +
+                encodeURIComponent(id)
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !data.success ||
+            !data.certificate
+        ) {
+
+            status.textContent =
+                "✕ CERTIFICATE NOT VALID";
+
+            status.className =
+                "status invalid";
+
+            details.innerHTML = `
+                <div class="row">
+                    <div class="label">
+                        Certificate Number
+                    </div>
+                    <div class="value">
+                        ${escapeHTML(id)}
+                    </div>
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const c =
+            data.certificate;
+
+
+        status.textContent =
+            "✓ CERTIFICATE IS VALID";
+
+        status.className =
+            "status valid";
+
+
+        let percentage =
+            Number(c.Percentage);
+
+
+        if (
+            !isNaN(percentage) &&
+            percentage <= 1
+        ) {
+            percentage =
+                percentage * 100;
+        }
+
+
+        details.innerHTML = `
+
+            <div class="row">
+                <div class="label">
+                    Certificate Number
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.CertificateNumber)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Admission Number
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.AdmissionNumber)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Issue Date
+                </div>
+                <div class="value">
+                    ${escapeHTML(formatDate(c.IssueDate))}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Student Name
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.StudentTitle)}
+                    ${escapeHTML(c.StudentName)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Father's Name
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.FatherName)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Course 1
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.Course1)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Course 2
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.Course2)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Course 3
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.Course3)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Course Duration
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.CourseDuration)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Total Marks
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.TotalMarks)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Marks Obtained
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.MarksObtained)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Percentage
+                </div>
+                <div class="value">
+                    ${
+                        !isNaN(percentage)
+                        ? percentage.toFixed(2) + "%"
+                        : "-"
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Grade
+                </div>
+                <div class="value">
+                    ${escapeHTML(c.Grade)}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    Status
+                </div>
+                <div class="value">
+                    VALID
+                </div>
+            </div>
+
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+            "⚠ VERIFICATION SERVICE ERROR";
+
+        status.className =
+            "status invalid";
+
+    }
+
+}
+
+
+verify();
+
+</script>
+
+</body>
+
+</html>
