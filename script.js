@@ -4,8 +4,9 @@ const SETKEY="ammytechSettings";
 const GITHUB_USERNAME="ammytechinstitute-web";
 const GITHUB_REPOSITORY="ammytechinstitute-web";
 
-let photo="";
+const API_URL="https://script.google.com/macros/s/AKfycbwnHXcGldTUg2AmMajb8ZjTah0NSA93fqdq6_UkShj3FoKNVnR-NaHbUywBdDO6VkQmUg/exec";
 
+let photo="";
 
 const defaults={
 name:"AMMYTECH COMPUTER INSTITUTE",
@@ -15,7 +16,6 @@ email:"ammytechinstitute@gmail.com",
 udyam:"UDYAM-PB-17-0130510",
 director:"Shankar Baheliya"
 };
-
 
 document.addEventListener("DOMContentLoaded",()=>{
 
@@ -31,16 +31,13 @@ document.getElementById(id).addEventListener("input",calc);
 
 });
 
-
 document.querySelectorAll(".nav").forEach(x=>{
 
 x.onclick=()=>page(x.dataset.page);
 
 });
 
-
 document.getElementById("studentPhoto").onchange=readPhoto;
-
 
 document.getElementById("today").textContent=
 
@@ -53,13 +50,11 @@ year:"numeric"
 }
 );
 
-
 document.querySelectorAll("#create input,#create select").forEach(x=>{
 
 x.addEventListener("input",preview);
 
 });
-
 
 preview();
 
@@ -68,7 +63,6 @@ dashboard();
 renderRecords();
 
 });
-
 
 function list(){
 
@@ -83,7 +77,6 @@ return[];
 }
 
 }
-
 
 function settings(){
 
@@ -102,13 +95,11 @@ return defaults;
 
 }
 
-
 function saveList(a){
 
 localStorage.setItem(KEY,JSON.stringify(a));
 
 }
-
 
 function page(id){
 
@@ -120,7 +111,6 @@ x.classList.remove("active")
 
 document.getElementById(id).classList.add("active");
 
-
 document.querySelectorAll(".nav").forEach(x=>
 
 x.classList.toggle(
@@ -129,7 +119,6 @@ x.dataset.page===id
 )
 
 );
-
 
 document.getElementById("title").textContent={
 
@@ -145,19 +134,15 @@ settings:"Institute Settings"
 
 }[id];
 
-
 document.querySelector(".sidebar").classList.remove("open");
-
 
 if(id==="records")renderRecords();
 
 if(id==="dashboard")dashboard();
 
-
 window.scrollTo(0,0);
 
 }
-
 
 function newCertificate(){
 
@@ -166,7 +151,6 @@ page("create");
 clearForm(false);
 
 }
-
 
 function setDate(){
 
@@ -177,7 +161,6 @@ document.getElementById("issueDate").value=
 `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 
 }
-
 
 function nextNo(){
 
@@ -192,11 +175,9 @@ x=>x.certificateNumber===
 )
 )n++;
 
-
 return `AMMY-CERT-${String(n).padStart(4,"0")}`;
 
 }
-
 
 function calc(){
 
@@ -204,18 +185,15 @@ let t=+v("totalMarks");
 
 let m=+v("marksObtained");
 
-
 if(!t || m<0 || m>t){
 
 document.getElementById("percentage").value=
 
 m>t?"Invalid":"";
 
-
 document.getElementById("grade").value=
 
 m>t?"Invalid":"";
-
 
 preview();
 
@@ -223,21 +201,17 @@ return;
 
 }
 
-
 let p=m/t*100;
 
 document.getElementById("percentage").value=
 
 p.toFixed(2)+"%";
 
-
 document.getElementById("grade").value=gr(p);
-
 
 preview();
 
 }
-
 
 function gr(p){
 
@@ -255,13 +229,11 @@ p>=40?"D":"F";
 
 }
 
-
 function v(id){
 
 return document.getElementById(id).value.trim();
 
 }
-
 
 function readPhoto(e){
 
@@ -269,26 +241,21 @@ let f=e.target.files[0];
 
 if(!f)return;
 
-
 if(!f.type.startsWith("image/"))
 
 return toast("Please select an image.");
 
-
 let r=new FileReader();
-
 
 r.onload=x=>{
 
 photo=x.target.result;
-
 
 document.getElementById("uploadPhoto").src=photo;
 
 document.getElementById("uploadPhoto").style.display="block";
 
 document.getElementById("uploadText").style.display="none";
-
 
 document.getElementById("pPhoto").src=photo;
 
@@ -298,11 +265,9 @@ document.getElementById("pPhotoText").style.display="none";
 
 };
 
-
 r.readAsDataURL(f);
 
 }
-
 
 function getData(){
 
@@ -311,7 +276,6 @@ let t=+v("totalMarks")||0;
 let m=+v("marksObtained")||0;
 
 let p=t&&m<=t?m/t*100:0;
-
 
 return{
 
@@ -365,13 +329,11 @@ photo
 
 }
 
-
 function verificationURL(certificateNumber){
 
 return `https://${GITHUB_USERNAME}.github.io/${GITHUB_REPOSITORY}/verify.html?id=${encodeURIComponent(certificateNumber)}`;
 
 }
-
 
 function generateQR(certificateNumber){
 
@@ -379,12 +341,9 @@ const box=document.getElementById("qrcode");
 
 if(!box)return;
 
-
 box.innerHTML="";
 
-
 if(!certificateNumber)return;
-
 
 if(typeof QRCode==="undefined"){
 
@@ -395,7 +354,6 @@ box.innerHTML=
 return;
 
 }
-
 
 new QRCode(box,{
 
@@ -411,13 +369,11 @@ correctLevel:QRCode.CorrectLevel.M
 
 }
 
-
 function preview(){
 
 let d=getData();
 
 let s=settings();
-
 
 set("pInstitute",d.instituteName||s.name);
 
@@ -503,18 +459,15 @@ set(
 d.instituteEmail||s.email
 );
 
-
 generateQR(d.certificateNumber);
 
 }
-
 
 function set(id,x){
 
 document.getElementById(id).textContent=x;
 
 }
-
 
 function date(x){
 
@@ -528,11 +481,9 @@ return p.length===3?
 
 }
 
-
-function saveCertificate(){
+async function saveCertificate(){
 
 let d=getData();
-
 
 if(!d.studentName||!d.course1)
 
@@ -540,13 +491,81 @@ return toast(
 "Student Name and Course 1 are required."
 );
 
-
 if(d.marksObtained>d.totalMarks)
 
 return toast(
 "Marks Obtained cannot exceed Total Marks."
 );
 
+const sheetData={
+
+certificateNumber:d.certificateNumber,
+
+admissionNumber:d.admissionNumber,
+
+issueDate:d.issueDate,
+
+studentTitle:d.studentTitle,
+
+studentName:d.studentName,
+
+fatherName:d.fatherName,
+
+course1:d.course1,
+
+course2:d.course2,
+
+course3:d.course3,
+
+courseDuration:d.courseDuration,
+
+totalMarks:d.totalMarks,
+
+marksObtained:d.marksObtained,
+
+percentage:d.percentage,
+
+grade:d.grade,
+
+directorName:d.directorName,
+
+status:"VALID",
+
+createdAt:new Date().toISOString()
+
+};
+
+try{
+
+toast("Saving certificate...");
+
+const response=await fetch(
+API_URL,
+{
+method:"POST",
+body:JSON.stringify(sheetData)
+}
+);
+
+const result=await response.json();
+
+if(!result.success){
+
+return toast(
+"Google Sheet Error: "+result.message
+);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+return toast(
+"Certificate Google Sheet me save nahi hua."
+);
+
+}
 
 let a=list();
 
@@ -555,7 +574,6 @@ x=>x.certificateNumber===
 d.certificateNumber
 );
 
-
 if(i>=0)
 
 a[i]=d;
@@ -563,7 +581,6 @@ a[i]=d;
 else
 
 a.unshift(d);
-
 
 saveList(a);
 
@@ -577,14 +594,12 @@ page("records");
 
 }
 
-
 function clearForm(confirmIt=true){
 
 if(
 confirmIt &&
 !confirm("Clear all form data?")
 )return;
-
 
 document.querySelectorAll("#create input").forEach(x=>{
 
@@ -594,7 +609,6 @@ x.value="";
 
 });
 
-
 document.getElementById("studentTitle").value="Mr.";
 
 document.getElementById("certificateNumber").value=nextNo();
@@ -602,7 +616,6 @@ document.getElementById("certificateNumber").value=nextNo();
 setDate();
 
 photo="";
-
 
 document.getElementById("uploadPhoto").style.display="none";
 
@@ -612,11 +625,9 @@ document.getElementById("pPhoto").style.display="none";
 
 document.getElementById("pPhotoText").style.display="block";
 
-
 preview();
 
 }
-
 
 function dashboard(){
 
@@ -625,7 +636,6 @@ let a=list();
 let avg=a.length?
 
 a.reduce((s,x)=>s+x.percentage,0)/a.length:0;
-
 
 set("sTotal",a.length);
 
@@ -643,9 +653,7 @@ x=>x.grade==="A"||x.grade==="A+"
 ).length
 );
 
-
 let r=document.getElementById("recent");
-
 
 r.innerHTML=a.length?
 
@@ -683,13 +691,11 @@ ${x.percentage.toFixed(2)}%
 
 }
 
-
 function renderRecords(){
 
 let q=
 (document.getElementById("search")?.value||"")
 .toLowerCase();
-
 
 let a=list().filter(x=>
 
@@ -703,13 +709,11 @@ x.certificateNumber
 
 );
 
-
 set(
 "count",
 a.length+" record"+
 (a.length!==1?"s":"")
 );
-
 
 document.getElementById("table").innerHTML=
 
@@ -785,19 +789,15 @@ Delete
 
 }
 
-
 function edit(no){
 
 let x=list().find(
 a=>a.certificateNumber===no
 );
 
-
 if(!x)return;
 
-
 page("create");
-
 
 Object.keys(x).forEach(k=>{
 
@@ -809,9 +809,7 @@ el.value=x[k]??"";
 
 });
 
-
 photo=x.photo||"";
-
 
 if(photo){
 
@@ -821,7 +819,6 @@ document.getElementById("uploadPhoto").style.display="block";
 
 document.getElementById("uploadText").style.display="none";
 
-
 document.getElementById("pPhoto").src=photo;
 
 document.getElementById("pPhoto").style.display="block";
@@ -830,13 +827,11 @@ document.getElementById("pPhotoText").style.display="none";
 
 }
 
-
 calc();
 
 preview();
 
 }
-
 
 function del(no){
 
@@ -844,13 +839,11 @@ if(!confirm("Delete this certificate?"))
 
 return;
 
-
 saveList(
 list().filter(
 x=>x.certificateNumber!==no
 )
 );
-
 
 renderRecords();
 
@@ -859,7 +852,6 @@ dashboard();
 toast("Certificate deleted.");
 
 }
-
 
 function printSaved(no){
 
@@ -872,7 +864,6 @@ setTimeout(
 
 }
 
-
 function printCertificate(){
 
 if(!v("studentName"))
@@ -881,11 +872,9 @@ return toast(
 "Please enter student name first."
 );
 
-
 window.print();
 
 }
-
 
 function verify(){
 
@@ -895,9 +884,7 @@ let x=list().find(
 a=>a.certificateNumber.toUpperCase()===no
 );
 
-
 let r=document.getElementById("verifyResult");
-
 
 if(!no){
 
@@ -906,7 +893,6 @@ r.innerHTML="";
 return;
 
 }
-
 
 r.innerHTML=x?
 
@@ -971,11 +957,9 @@ No saved record matches this certificate number.
 
 }
 
-
 function loadSettings(){
 
 let s=settings();
-
 
 setval("setName",s.name);
 
@@ -988,7 +972,6 @@ setval("setPhone",s.phone);
 setval("setEmail",s.email);
 
 setval("setUdyam",s.udyam);
-
 
 setval("instituteName",s.name);
 
@@ -1004,13 +987,11 @@ setval("directorName",s.director);
 
 }
 
-
 function setval(id,x){
 
 document.getElementById(id).value=x;
 
 }
-
 
 function saveSettings(){
 
@@ -1030,12 +1011,10 @@ udyam:v("setUdyam")||defaults.udyam
 
 };
 
-
 localStorage.setItem(
 SETKEY,
 JSON.stringify(s)
 );
-
 
 loadSettings();
 
@@ -1044,7 +1023,6 @@ preview();
 toast("Institute settings saved.");
 
 }
-
 
 function toast(x){
 
@@ -1062,7 +1040,6 @@ window.tt=setTimeout(
 );
 
 }
-
 
 function esc(x){
 
@@ -1083,7 +1060,6 @@ m=>({
 );
 
 }
-
 
 document.getElementById("menu").onclick=()=>{
 
